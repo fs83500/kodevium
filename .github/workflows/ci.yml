@@ -25,3 +25,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: PHP syntax check
+        run: |
+          for file in $(find . -name "*.php" -not -path "./vendor/*"); do
+            php -l "$file"
+          done
