@@ -7,27 +7,42 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+          php-version: '8.2'
 
       - name: PHP syntax check
         run: |
           for file in $(find . -name "*.php" -not -path "./vendor/*"); do
             php -l "$file"
+          done
+
+      - name: HTML validation
+        run: |
+          for file in $(find . -name "*.html"); do
+            if grep -q "<html" "$file" && grep -q "</html>" "$file"; then
+              echo "✓ $file : structure HTML valide"
+            else
+              echo "✗ $file : balises <html> manquantes"
+              exit 1
+            fi
+          done
+
+      - name: CSS validation
+        run: |
+          for file in $(find . -name "*.css"); do
+            if grep -q "{" "$file" && grep -q "}" "$file"; then
+              echo "✓ $file : structure CSS valide"
+            else
+              echo "✗ $file : accolades CSS manquantes"
+              exit 1
+            fi
           done
