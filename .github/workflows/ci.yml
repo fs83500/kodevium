@@ -96,3 +96,9 @@ jobs:
             ELAPSED=$((ELAPSED + INTERVAL))
           done
           echo "✓ Test d'endurance terminé : 7 minutes complétées avec succès"
+
+      - name: Failure test
+        run: |
+          echo "Cette étape provoque volontairement une erreur..."
+          echo "✗ Simulation d'un échec de test"
+          exit 1
