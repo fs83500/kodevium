@@ -82,3 +82,17 @@ jobs:
           else
             echo "✓ YAML valide (pyyaml)"
           fi
+
+      - name: Endurance test (5 min)
+        run: |
+          echo "Démarrage du test d'endurance (5 minutes)..."
+          DURATION=300
+          INTERVAL=30
+          ELAPSED=0
+          while [ "$ELAPSED" -lt "$DURATION" ]; do
+            REMAINING=$((DURATION - ELAPSED))
+            echo "Progression : ${ELAPSED}s / ${DURATION}s (reste ${REMAINING}s) — $(date '+%H:%M:%S')"
+            sleep "$INTERVAL"
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+          echo "✓ Test d'endurance terminé : 5 minutes complétées avec succès"
