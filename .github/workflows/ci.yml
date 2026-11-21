@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,4 +18,26 @@ jobs:
         run: |
           for file in $(find . -name "*.php" -not -path "./vendor/*"); do
             php -l "$file"
+          done
+
+      - name: HTML validation
+        run: |
+          for file in $(find . -name "*.html"); do
+            if grep -q "<html" "$file" && grep -q "</html>" "$file"; then
+              echo "✓ $file : structure HTML valide"
+            else
+              echo "✗ $file : balises <html> manquantes"
+              exit 1
+            fi
+          done
+
+      - name: CSS validation
+        run: |
+          for file in $(find . -name "*.css"); do
+            if grep -q "{" "$file" && grep -q "}" "$file"; then
+              echo "✓ $file : structure CSS valide"
+            else
+              echo "✗ $file : accolades CSS manquantes"
+              exit 1
+            fi
           done
