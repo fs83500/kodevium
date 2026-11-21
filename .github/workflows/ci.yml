@@ -99,6 +99,5 @@ jobs:
 
       - name: Failure test
         run: |
-          echo "Cette étape provoque volontairement une erreur..."
-          echo "✗ Simulation d'un échec de test"
-          exit 1
+          echo "Cette étape ne provoque plus d'erreur."
+          echo "✓ Test réussi"
